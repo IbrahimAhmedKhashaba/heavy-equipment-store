@@ -142,6 +142,11 @@ return [
 
     'system' => 'System',
 
+    'products_per_months' => 'Products per month',
+    'categories_per_months' => 'Categories per month',
+    'users_per_months' => 'Admins per month',
+    'contacts_per_months' => 'Contacts per month',
+
 
 
 

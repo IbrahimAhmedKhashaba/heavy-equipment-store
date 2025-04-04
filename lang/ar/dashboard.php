@@ -131,6 +131,11 @@ return [
 
     'system' => 'النظام',
 
+    'products_per_months' => 'المنتجات المضافة شهرياً',
+    'categories_per_months' => 'الفئات المضافة شهرياً',
+    'users_per_months' => 'المشرفون المضافون شهرياً',
+    'contacts_per_months' => 'الرسائل المرسلة شهرياً',
+
 
 
 
