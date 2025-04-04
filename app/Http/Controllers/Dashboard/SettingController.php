@@ -2,55 +2,27 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Setting;
-use App\Utils\ImageManger;
-use Illuminate\Http\Request;
+use App\Services\Dashboard\Setting\SettingService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SettingRequest;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\Dashboard\SettingRequest;
 use Illuminate\Support\Facades\Session;
 
 class SettingController extends Controller
 {
-    protected $imageManager;
-    public function __construct(ImageManger $imageManager)
+    protected $settingService;
+    public function __construct(SettingService $settingService)
     {
-        $this->imageManager = $imageManager;
+        $this->settingService = $settingService;
     }
     public function index()
     {
         return view('dashboard.settings.index');
     }
-    public function update(SettingRequest $request,$id)
+    public function update(SettingRequest $request, $id)
     {
-        $data = $request->all();
-        $setting = Cache::get('setting');
-
-        if(array_key_exists('site_logo', $data) && $data['site_logo'] != null){
-            $data['site_logo'] = $this->updateFile('site_logo',$data,$setting);
-        }
-        if(array_key_exists('about_us_image', $data) && $data['about_us_image'] != null){
-            $data['about_us_image'] = $this->updateFile('about_us_image',$data,$setting);
-        }
-        if(array_key_exists('site_favicon', $data) && $data['site_favicon'] != null){
-            $data['site_favicon'] = $this->updateFile('site_favicon',$data,$setting);
-        }
-
-
-        if(!$setting->update($data)){
-            Session::flash('error',__('dashboard.error_msg'));
-            return redirect()->back();
-        };
-        Session::flash('success',__('dashboard.success_msg'));
+        $setting = $this->settingService->update($request);
+        $setting ? Session::flash('success', __('dashboard.success_msg')) :
+            Session::flash('error', __('dashboard.error_msg'));
         return redirect()->back();
-
     }
-
-    public function updateFile($key,$data,$setting)
-    {
-            $this->imageManager->deleteImageFromLocal($setting->$key);
-            $file_name = $this->imageManager->uploadSingleImage('/' , $data[$key] , 'settings');
-            return $file_name;
-    }
-
 }

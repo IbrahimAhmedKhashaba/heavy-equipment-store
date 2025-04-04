@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Dashboard\CatalogRequest;
 use App\Models\Catalog;
+use App\Services\Dashboard\Catalog\CatalogService;
 use App\Utils\ImageManger;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,41 +14,20 @@ use Illuminate\Support\Facades\Session;
 class CatalogController extends Controller
 {
 
-    public $imageManger;
-    public function __construct(ImageManger $imageManger)
+    public $catalogService;
+    public function __construct(CatalogService $catalogService)
     {
-        $this->imageManger = $imageManger;
+        $this->catalogService = $catalogService;
     }
     public function index()
     {
         return view('dashboard.settings.catalog');
     }
-    public function store(Request $request)
+    public function store(CatalogRequest $request)
     {
-        $request->validate([
-            'pdf' => 'required|mimes:pdf|max:20480', // PDF only, max 20MB
-        ]);
-
-        $catalog = Catalog::first();
-        if($catalog){
-            $this->imageManger->deleteImageFromLocal('uploads/settings/'.$catalog->file_path);
-            $catalog->delete();
-        }
-
-        // Store the PDF
-        if($request->hasFile('pdf')){
-            $file = $request->file('pdf');
-            $name = time().'catalog'.rand(1,20).'.pdf';
-            $file_name = $file->storeAs('/', $name, ['disk'=>'settings']);
-
-            Catalog::create([
-                'file_path' => $file_name,
-            ]);
-            Cache::forget('catalog');
+        if ($this->catalogService->store($request)) {
             Session::flash('success', __('dashboard.success_msg'));
-            return redirect()->back();
-
         }
-
+        return redirect()->back();
     }
 }

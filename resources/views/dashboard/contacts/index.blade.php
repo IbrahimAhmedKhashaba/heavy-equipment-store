@@ -192,6 +192,7 @@
                                     icon: "success"
                                 });
                                 $('#yajra_table').DataTable().ajax.reload();
+                                
                             } else {
                                 Swal.fire({
                                     title: response.status,

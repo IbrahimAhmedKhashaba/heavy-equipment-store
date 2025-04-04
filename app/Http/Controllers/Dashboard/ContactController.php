@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Models\Contact;
+use App\Services\Dashboard\Contact\ContactService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -10,36 +11,27 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ContactController extends Controller
 {
+    private $contactService;
+
+    public function __construct(ContactService $contactService){
+        $this->contactService = $contactService;
+    }
     public function index()
     {
-        Contact::where('is_read', 0)->update(['is_read' => 1]);
+        $this->contactService->markAsRead();
         return view('dashboard.contacts.index');
     }
     public function getAll()
     {
-        $contacts = Contact::latest()->get();
-        return DataTables::of($contacts)
-            ->addIndexColumn()
-            ->addColumn('action', function ($contact) {
-                return view('dashboard.contacts.datatables._action', compact('contact'));
-            })
-            ->addColumn('created_at', function ($contact) {
-                return $contact->created_at->diffForHumans();
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        return $this->contactService->getAll();
     }
 
     public function destroy($id)
     {
-        $contact = Contact::find($id);
+        $contact = $this->contactService->destroy($id);
         if(!$contact){
             return response()->json(['status' => 'error','message'=>__('dashboard.not_fount')]);
         }
-        $contact->delete();
-        Cache::forget('contacts');
-        Cache::forget('contacts_count');
-        Cache::forget('unread_contacts');
         return response()->json(['status' => 'success','message'=>__('dashboard.success_msg')]);
     }
 

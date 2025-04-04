@@ -26,42 +26,42 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $setting    = Cache::remember('setting' , 3600 , function(){
+        $setting = Cache::remember('setting', 3600, function () {
             return $this->firstOrCreateSetting();
         });
-        $categories    = Cache::remember('categories' , 3600 , function(){
+        $categories = Cache::remember('categories', 3600, function () {
             return Category::all();
         });
-        $catalog    = Cache::remember('catalog' , 3600 , function(){
+        $catalog = Cache::remember('catalog', 3600, function () {
             return Catalog::first();
         });
-        $products_count    = Cache::remember('products_count' , 3600 , function(){
+        $products_count = Cache::remember('products_count', 3600, function () {
             return Product::all()->count();
         });
-        
+
         view()->share([
             'setting' => $setting,
             'categories' => $categories,
-            'catalog'   => $catalog,
-            'products_count'=>$products_count,
+            'catalog' => $catalog,
+            'products_count' => $products_count,
         ]);
 
 
-        view()->composer('dashboard.*', function ($view) use ($categories , $products_count) {
+        view()->composer('dashboard.*', function ($view) use ($categories, $products_count) {
 
             $categories_count = $categories->count();
-            
-            $users_count    = Cache::remember('users_count' , 3600 , function(){
+
+            $users_count = Cache::remember('users_count', 3600, function () {
                 return User::all()->count();
             });
-            $products_count    = Cache::remember('products_count' , 3600 , function(){
+            $products_count = Cache::remember('products_count', 3600, function () {
                 return Product::all()->count();
             });
-            $contacts_count    = Cache::remember('contacts_count' , 3600 , function(){
+            $contacts_count = Cache::remember('contacts_count', 3600, function () {
                 return Contact::all()->count();
             });
 
-            $unread_contacts    = Cache::remember('unread_contacts' , 3600 , function(){
+            $unread_contacts = Cache::remember('unread_contacts', 3600, function () {
                 return Contact::where('is_read', 0)->get();
             });
 
@@ -96,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
 
                                 Thank you for choosing [Your Store Name] – where quality meets convenience!',
 
-                                'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
+                    'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
                                         نحن ملتزمون بتقديم منتجات عالية الجودة بأسعار تنافسية وخدمة عملاء استثنائية.
 
                                         في [اسم المتجر]، نقدم مجموعة واسعة من المنتجات، بدءًا من الأزياء والإلكترونيات إلى المستلزمات المنزلية وأكثر من ذلك. هدفنا هو جعل التسوق عبر الإنترنت سهلًا وآمنًا وممتعًا.
@@ -108,7 +108,7 @@ class AppServiceProvider extends ServiceProvider
 
                                         شكرًا لاختيارك [اسم المتجر] – حيث تلتقي الجودة بالراحة!',
                 ],
-                'about_us_image'=>'about-us.jpg',
+                'about_us_image' => 'about-us.jpg',
                 'site_address' => [
                     'en' => 'Egypt , Sohag , Awlad Hamza',
                     'ar' => 'مصر , سوهاج ,  أولاد حمزة',
@@ -137,7 +137,7 @@ class AppServiceProvider extends ServiceProvider
 
                                 Thank you for choosing [Your Store Name] – where quality meets convenience!',
 
-                                'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
+                    'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
                                         نحن ملتزمون بتقديم منتجات عالية الجودة بأسعار تنافسية وخدمة عملاء استثنائية.
 
                                         في [اسم المتجر]، نقدم مجموعة واسعة من المنتجات، بدءًا من الأزياء والإلكترونيات إلى المستلزمات المنزلية وأكثر من ذلك. هدفنا هو جعل التسوق عبر الإنترنت سهلًا وآمنًا وممتعًا.
@@ -162,7 +162,7 @@ class AppServiceProvider extends ServiceProvider
 
                                 Thank you for choosing [Your Store Name] – where quality meets convenience!',
 
-                                'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
+                    'ar' => 'مرحبًا بكم في [اسم المتجر]، وجهتكم المثالية للحصول على أحدث المنتجات وأفضل العروض!
                                         نحن ملتزمون بتقديم منتجات عالية الجودة بأسعار تنافسية وخدمة عملاء استثنائية.
 
                                         في [اسم المتجر]، نقدم مجموعة واسعة من المنتجات، بدءًا من الأزياء والإلكترونيات إلى المستلزمات المنزلية وأكثر من ذلك. هدفنا هو جعل التسوق عبر الإنترنت سهلًا وآمنًا وممتعًا.
