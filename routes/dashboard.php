@@ -46,11 +46,11 @@ Route::group(
             ################################ contacts Routes ###############################
             Route::controller(ContactController::class)->group(function () {
                 Route::get('contacts', 'index')->name('contacts.index');
-                Route::get('contacts-all','getAll')->name('contacts.all');
+                Route::get('contacts-all', 'getAll')->name('contacts.all');
                 Route::delete('contacts/{id}', 'destroy')->name('contacts.destroy');
             });
-             ################################ settings Routes ###############################
-             Route::controller(SettingController::class)->group(function () {
+            ################################ settings Routes ###############################
+            Route::controller(SettingController::class)->group(function () {
                 Route::get('settings', 'index')->name('settings.index');
                 Route::Put('settings/{id}', 'update')->name('settings.update');
             });
@@ -58,16 +58,16 @@ Route::group(
             Route::controller(SliderController::class)->group(function () {
                 Route::get('sliders', 'index')->name('sliders.index');
                 Route::post('sliders', 'store')->name('sliders.store');
-                Route::post('sliders-image-delete/{id}','deleteImage')
-                  ->name('sliders.image.delete');
+                Route::post('sliders-image-delete/{id}', 'deleteImage')
+                    ->name('sliders.image.delete');
             });
             ################################ profile Routes ###############################
             Route::controller(ProfileController::class)->group(function () {
                 Route::get('profile', 'index')->name('profile.index');
                 Route::Put('profile/{id}', 'update')->name('profile.update');
             });
-             ################################ catalog Routes ###############################
-             Route::controller(CatalogController::class)->group(function () {
+            ################################ catalog Routes ###############################
+            Route::controller(CatalogController::class)->group(function () {
                 Route::get('catalog', 'index')->name('catalog.index');
                 Route::post('catalog', 'store')->name('catalog.store');
             });
@@ -75,23 +75,16 @@ Route::group(
             ################################ users Routes ###############################
             Route::resource('users', UserController::class)->except('show', 'create', 'edit');
             Route::get('users-all', [UserController::class, 'getAll'])->name('users.all');
-
-            Route::get('/datatable/ar', function () {
-                // Set the path to your JSON file
-                $path = resource_path('layouts/'); // Assuming ar.json is in resources/lang
             
-                // Check if the file exists
+            ################################ DataTables Ar ###############################
+            Route::get('/datatable/ar', function () {
+                $path = resource_path('views/layouts/dashboard/datatable.json');
                 if (!file_exists($path)) {
                     return response()->json(['error' => 'Language file not found'], 404);
                 }
-            
-                // Get the content of the JSON file
                 $json = file_get_contents($path);
-                
-                // Return the JSON content as a response
                 return response()->json(json_decode($json));
             })->name('datatable.ar');
-
         });
     }
 );
