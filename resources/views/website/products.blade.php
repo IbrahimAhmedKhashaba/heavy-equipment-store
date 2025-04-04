@@ -34,7 +34,7 @@
                             <!-- Product Image -->
                             <div
                                 class="ratio ratio-1x1 bg-light d-flex align-items-center justify-content-center position-relative card-content">
-                                <img src="{{ asset('uploads/products/' . $product->images()->first()->file_name) }}"
+                                <img src="{{ asset('uploads/products/' . $product->images[0]->file_name) }}"
                                     class="card-img-top object-fit-cover transition-scale" alt="{{ $product->name }}">
                                 <!-- Quick View Button -->
                                 <button
@@ -72,7 +72,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body text-center p-4">
-                                    <img src="{{ asset('uploads/products/' . $product->images()->first()->file_name) }}"
+                                    <img src="{{ asset('uploads/products/' . $product->images[0]->file_name) }}"
                                         class="img-fluid rounded shadow" style="max-height: 75vh; object-fit: contain;"
                                         alt="{{ $product->name }}">
                                 </div>

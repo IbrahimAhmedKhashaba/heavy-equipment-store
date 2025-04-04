@@ -76,7 +76,21 @@ Route::group(
             Route::resource('users', UserController::class)->except('show', 'create', 'edit');
             Route::get('users-all', [UserController::class, 'getAll'])->name('users.all');
 
-
+            Route::get('/datatable/ar', function () {
+                // Set the path to your JSON file
+                $path = resource_path('layouts/'); // Assuming ar.json is in resources/lang
+            
+                // Check if the file exists
+                if (!file_exists($path)) {
+                    return response()->json(['error' => 'Language file not found'], 404);
+                }
+            
+                // Get the content of the JSON file
+                $json = file_get_contents($path);
+                
+                // Return the JSON content as a response
+                return response()->json(json_decode($json));
+            })->name('datatable.ar');
 
         });
     }

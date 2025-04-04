@@ -46,6 +46,8 @@ Route::group(
         Livewire::setUpdateRoute(function ($handle) {
             return Route::post('/livewire/update', $handle);
         });
+
+        
     }
 );
 

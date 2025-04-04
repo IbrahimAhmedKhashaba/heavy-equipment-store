@@ -3,32 +3,29 @@
 namespace App\Http\Controllers\Website;
 
 use App\Models\Contact;
+use App\Services\WebSite\Contact\ContactService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WebSite\ContactRequest;
 use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
+    private $contactService;
+    public function __construct(ContactService $contactService)
+    {
+        $this->contactService = $contactService;
+    }
     public function index()
     {
         return view('website.contact');
     }
-    public function send(Request $request)
+    public function send(ContactRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|max:1000',
-        ]);
 
-        $contact = Contact::create($request->all());
-        if(!$contact){
-            Session::flash('error', __('dashboard.error_msg') );
-            return redirect()->back();
-        }
-         Session::flash('success', __('dashboard.success_msg') );
-         return redirect()->back();
-
+        $contact = $this->contactService->store($request);
+        $contact ? Session::flash('success', __('dashboard.success_msg')) :
+            Session::flash('error', __('dashboard.error_msg'));
+        return redirect()->back();
     }
 }
