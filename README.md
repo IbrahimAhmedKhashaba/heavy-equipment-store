@@ -35,4 +35,21 @@ composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan serve
+
+---
+
+## To access the admin dashboard, you can use the following demo credentials:
+
+- **Email:** ibrahim@admin.com  
+- **Password:** 789789789
+
+---
+
+📬 Contact
+For questions or feedback, feel free to reach me on:
+
+💼 LinkedIn: https://www.linkedin.com/in/ibrahim-khashaba-9167a323b/
+
+📧 Email: ibrahimahmedkhashaba@gmail.com
